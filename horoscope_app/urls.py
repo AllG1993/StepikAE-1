@@ -6,4 +6,5 @@ urlpatterns = [
     path('scorpio/', views.scorpio),
     path('aries/', views.aries),
     path('taurus/', views.taurus),
+    path('taurussss/', views.taurus),
 ]
