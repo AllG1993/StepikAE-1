@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 
 sh = {"aries": "Овен - первый знак зодиака, планета Марс (с 21 марта по 20 апреля)",
       "taurus": "Телец - второй знак зодиака, планета Венера (с 21 апреля по 21 мая)",
@@ -24,6 +24,10 @@ def get_info_sign_horoscope(requests, sign_horoscope: str):
 
 
 def get_info_sign_horoscope_by_number(requests, sign_horoscope: int):
-    return HttpResponse(f'Это номер {sign_horoscope}')
+    sh_key_list = list(sh)
+    if sign_horoscope > len(sh_key_list):
+        return HttpResponseNotFound(f'Знак зодиака c номером: "{sign_horoscope}" отсутствует.')
+    name_sh = sh_key_list[sign_horoscope - 1]
+    return HttpResponseRedirect(f'/horoscope/{name_sh}')
 
 
