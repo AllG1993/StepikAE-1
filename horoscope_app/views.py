@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-
+from django.urls import reverse
 sh = {"aries": "Овен - первый знак зодиака, планета Марс (с 21 марта по 20 апреля)",
       "taurus": "Телец - второй знак зодиака, планета Венера (с 21 апреля по 21 мая)",
       "gemini": "Близнецы - третий знак зодиака, планета Меркурий (с 22 мая по 21 июня)",
@@ -16,9 +16,18 @@ sh = {"aries": "Овен - первый знак зодиака, планета 
       }
 
 
+def index(request):
+    sh_key_list = list(sh)
+    result = ''
+    for sign in sh_key_list:
+        sign_url = reverse('horoscope_name', args=[sign])
+        result += f'<li><a href="{sign_url}">{sign.title()}</a></li>'
+    return HttpResponse(f'<ol>{result}</ol>')
+
+
 def get_info_sign_horoscope(requests, sign_horoscope: str):
     if sign_horoscope.lower() in sh:
-        return HttpResponse(f'Знак зодиака: {sh[sign_horoscope]}')
+        return HttpResponse(f'<h2>Знак зодиака: {sh[sign_horoscope]}</h2>')
     else:
         return HttpResponseNotFound(f'Знак зодиака: "{sign_horoscope}" не определен.')
 
@@ -28,6 +37,7 @@ def get_info_sign_horoscope_by_number(requests, sign_horoscope: int):
     if sign_horoscope > len(sh_key_list):
         return HttpResponseNotFound(f'Знак зодиака c номером: "{sign_horoscope}" отсутствует.')
     name_sh = sh_key_list[sign_horoscope - 1]
-    return HttpResponseRedirect(f'/horoscope/{name_sh}')
+    redirect_url = reverse('horoscope_name', args=(name_sh,))
+    return HttpResponseRedirect(redirect_url)
 
 
