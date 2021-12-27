@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('horoscope/', include('horoscope_app.urls')),
     path('todo_week/', include('week_days_app.urls')),
+    path('calculate_geometry/', include('geometry_app.urls')),
 ]
